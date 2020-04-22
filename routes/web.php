@@ -33,6 +33,7 @@ Route::patch('categories/{category:slug}', 'CategoryController@update')->name('c
 Route::resource('posts', 'PostController', ['except' => ['show', 'index']]);
 
 Route::get('/', 'PostController@index')->name('posts.index');
+
 Route::get('posts/{category:slug}/{post:slug}', 'PostController@show')->name('posts.show');
 
 Auth::routes();

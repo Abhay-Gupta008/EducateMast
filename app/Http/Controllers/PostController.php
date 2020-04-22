@@ -23,8 +23,8 @@ class PostController extends Controller
      */
     public function index()
     {
-        $latestPosts = Post::orderBy('created_at', 'desc')->paginate(2);
-        $posts = Post::orderBy('created_at', 'desc')->paginate(5);
+        $latestPosts = Post::with('category')->orderBy('created_at', 'desc')->paginate(2);
+        $posts = Post::orderBy('created_at', 'desc')->with('category')->paginate(5);
         return response()->view('post.index', compact('latestPosts', 'posts'));
     }
 

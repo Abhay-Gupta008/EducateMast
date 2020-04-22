@@ -21,14 +21,14 @@
             <div class="col-md-8 justify-content-lg-end">
                 @foreach($posts as $post)
                     <div class="mb-3 bg-white">
-                        <div class="card-header"><a class="text-dark" href="/{{ $post->category->slug }}/{{ $post->slug }}">{{ $post->title }}</a></div>
+                        <div class="card-header"><a class="text-dark" href="{{ route('posts.show', [$post->category->slug, $post->slug]) }}">{{ $post->title }}</a></div>
 
                         <div class="card-body">
                             {{ $post->excerpt }}
                         </div>
                     </div>
                 @endforeach
-                <div class="col-md-12">{{ $posts->links() }}</div>
+                <div class="col-md-12 d-flex justify-content-center">{{ $posts->links() }}</div>
             </div>
         </div>
     </div>
