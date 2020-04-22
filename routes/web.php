@@ -13,34 +13,27 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::group(['domain' => 'educatemast.cf'], function() {
-    Route::group(['middleware' => ['auth', 'staff'], 'prefix' => 'admin'], function() {
-        Route::get('dashboard', function() {
-        });
+
+Route::group(['middleware' => ['auth', 'staff'], 'prefix' => 'admin'], function() {
+    Route::get('dashboard', function() {
     });
-
-    Route::resource('categories', 'CategoryController', ['except' => ['show', 'edit', 'update', 'destroy']]);
-
-    Route::get('categories/{category:slug}', 'CategoryController@show')->name('categories.show');
-
-    Route::get('categories/{category:slug}/edit', 'CategoryController@edit')->name('categories.edit');
-
-    Route::patch('categories/{category:slug}', 'CategoryController@update')->name('categories.update');
-
-    Route::resource('posts', 'PostController', ['except' => ['show', 'index']]);
-
-    Route::get('/', 'PostController@index')->name('posts.index');
-
-    Route::get('posts/{category:slug}/{post:slug}', 'PostController@show')->name('posts.show');
-
-    Auth::routes();
-
-    Route::get('/home', 'HomeController@index')->name('home');
 });
 
-Route::group(['domain' => 'help.educatemast.cf'], function() {
-   Route::get('/', function() {
-      return 'WIP';
-   });
-});
+Route::resource('categories', 'CategoryController', ['except' => ['show', 'edit', 'update', 'destroy']]);
+
+Route::get('categories/{category:slug}', 'CategoryController@show')->name('categories.show');
+
+Route::get('categories/{category:slug}/edit', 'CategoryController@edit')->name('categories.edit');
+
+Route::patch('categories/{category:slug}', 'CategoryController@update')->name('categories.update');
+
+Route::resource('posts', 'PostController', ['except' => ['show', 'index']]);
+
+Route::get('/', 'PostController@index')->name('posts.index');
+
+Route::get('posts/{category:slug}/{post:slug}', 'PostController@show')->name('posts.show');
+
+Auth::routes();
+
+Route::get('/home', 'HomeController@index')->name('home');
 
