@@ -27,11 +27,15 @@ Route::get('categories/{category:slug}/edit', 'CategoryController@edit')->name('
 
 Route::patch('categories/{category:slug}', 'CategoryController@update')->name('categories.update');
 
-Route::resource('posts', 'PostController', ['except' => ['show', 'index']]);
+Route::resource('posts', 'PostController', ['except' => ['show', 'index', 'edit', 'update']]);
 
 Route::get('/', 'PostController@index')->name('posts.index');
 
 Route::get('posts/{category:slug}/{post:slug}', 'PostController@show')->name('posts.show');
+
+Route::get('posts/{category:slug}/{post:slug}/edit', 'PostController@edit')->name('posts.edit');
+
+Route::patch('posts/{category:slug}/{post:slug}', 'PostController@update')->name('posts.update');
 
 Auth::routes();
 

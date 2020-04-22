@@ -61,7 +61,7 @@ class CategoryController extends Controller
      */
     public function show(Category $category)
     {
-        $posts = Post::where('category_id', $category->id)->paginate(5);
+        $posts = Post::where('category_id', $category->id)->orderBy('created_at', 'desc')->paginate(5);
         return response()->view('category.show', compact('category', 'posts'));
     }
 

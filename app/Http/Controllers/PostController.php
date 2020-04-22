@@ -14,6 +14,7 @@ class PostController extends Controller
     {
         $this->middleware('auth')->except('index', 'show');
         $this->middleware('staff')->except('index', 'show');
+        $this->middleware('admin')->only('edit', 'update');
     }
 
     /**
@@ -81,24 +82,44 @@ class PostController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Post  $post
+     * @param Category $category
+     * @param \App\Post $post
      * @return \Illuminate\Http\Response
      */
-    public function edit(Post $post)
+    public function edit(Category $category, Post $post)
     {
-        //
+        $categories = Category::all();
+
+        return response()->view('post.edit', compact('post', 'categories'));
     }
 
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Post  $post
+     * @param \Illuminate\Http\Request $request
+     * @param Category $category
+     * @param \App\Post $post
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Post $post)
+    public function update(Request $request, Category $category, Post $post)
     {
-        //
+        if ($request->slug == $post->slug) {
+             $validatedData = $request->validate([
+                'title' => ['required', 'min:3', 'max:255'],
+                'body' => ['required', 'min:10', 'max:500'],
+                'category' => ['required'],
+            ]);
+
+             $post->update($validatedData);
+        } else {
+            $post->update($this->validator($request));
+        }
+
+        $post->save();
+
+        session()->flash('message', 'The post has been edited successfully');
+
+        return response()->redirectTo(route('posts.index'));
     }
 
     /**
