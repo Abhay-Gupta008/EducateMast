@@ -12,7 +12,7 @@ class Category extends Model
     protected $fillable = ['id', 'name', 'slug'];
 
     public function scopeUncategorized($query) {
-        return $query->where('name', 'Uncategorized');
+        return $query->where('slug', 'Uncategorized');
     }
 
     public function posts() {
