@@ -108,10 +108,10 @@ class CategoryController extends Controller
      */
     public function destroy(Category $category)
     {
-        //
+        // Cancel this function.
     }
 
-    public function validator(Request $request) {
+    private function validator(Request $request) {
         return $request->validate([
            'name' => ['required', 'max:255'],
            'slug' => ['required', 'max:255', 'min:3', 'unique:categories'],
