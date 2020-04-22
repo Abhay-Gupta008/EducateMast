@@ -10,7 +10,7 @@
             <div class="col-md-12">
                 <div class="bg-white">
                     <div class="card-body">
-                        {{ $post->body }}
+                        {!! nl2br(e($post->body)) !!}
                     </div>
                 </div>
             </div>
