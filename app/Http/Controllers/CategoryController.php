@@ -108,7 +108,41 @@ class CategoryController extends Controller
      */
     public function destroy(Category $category)
     {
-        // Cancel this function.
+        $uncategorized = Category::uncategorized()->first();
+
+        $this->ChangeCategoryTo($category, $uncategorized);
+
+        $category->delete();
+
+        session()->flash('message', 'The category has been deleted successfully');
+        return response()->redirectTo(route('categories.index'));
+    }
+
+    /**
+     * Remove the specified resource from storage.
+     *
+     * @return \Illuminate\Http\Response
+     */
+
+    public function destroyed() {
+        $destroyedCategories = Category::onlyTrashed()->paginate(5);
+
+        return response()->view('category.destroyed', compact('destroyedCategories'));
+    }
+
+    /**
+     * Restore the specified resource from the database.
+     *
+     * @param int $id
+     * @return void
+     */
+
+    public function restore(int $id) {
+        $category = Category::onlyTrashed()->findOrFail($id);
+        $category->restore();
+
+        session()->flash('message', 'Category has been restored');
+        return response()->redirectTo(route('categories.index'));
     }
 
     private function validator(Request $request) {
@@ -116,5 +150,12 @@ class CategoryController extends Controller
            'name' => ['required', 'max:255'],
            'slug' => ['required', 'max:255', 'min:3', 'unique:categories'],
         ]);
+    }
+
+    public function ChangeCategoryTo(Category $categoryFrom, Category $categoryTo) {
+        foreach($categoryFrom->posts as $post) {
+            $post->category_id = $categoryTo->id;
+            $post->save();
+        }
     }
 }

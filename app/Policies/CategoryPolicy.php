@@ -53,7 +53,7 @@ class CategoryPolicy
      */
     public function update(User $user, Category $category)
     {
-        //
+        return $user->hasRole('admin');
     }
 
     /**
@@ -65,19 +65,25 @@ class CategoryPolicy
      */
     public function delete(User $user, Category $category)
     {
-        return $user->hasRole('admin');
+        $uncategorized = Category::uncategorized()->first();
+        if ($user->hasRole('admin')) {
+            if ($category->id == $uncategorized->id) {
+                return false;
+            } else {
+                return true;
+            }
+        }
     }
 
     /**
      * Determine whether the user can restore the model.
      *
      * @param  \App\User  $user
-     * @param  \App\Category  $category
      * @return mixed
      */
-    public function restore(User $user, Category $category)
+    public function restore(User $user)
     {
-        //
+        return $user->hasRole('admin');
     }
 
     /**

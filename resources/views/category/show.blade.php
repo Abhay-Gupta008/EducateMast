@@ -3,7 +3,7 @@
     <div class="container">
         <div class="row">
             <div class="col-md-12 d-flex justify-content-center">
-                <h2 class="font-weight-bolder">Category: {{ $category->name }}</h2>
+                <h2 class="font-weight-bolder">Category: {{ $category->name }}</h2>@can('update', $category)<h5 class="mt-2 pl-2"> | <a class="text-dark" href="{{ route('categories.edit', [$category->slug]) }}">Edit Category</a></h5>@endcan
             </div>
             <div class="text-center col-md-12">
                 <h5 class="font-weight-bold">Slug: {{ $category->slug }}</h5>

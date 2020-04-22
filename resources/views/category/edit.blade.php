@@ -4,7 +4,7 @@
         <div class="row justify-content-center">
             <div class="col-md-12">
                 <div class="card">
-                    <div class="card-header">{{ __('Edit Category') }}</div>
+                    <div class="card-header">{{ __('Edit Category') }} @can('delete', $category)<form class="mt-3 text-left" action="{{ route('categories.destroy', [$category->slug]) }}" method="post">@csrf <button type="submit" class="btn-danger btn">@method('DELETE') Delete Category</button></form>@endcan</div>
 
                     <div class="card-body">
                         <form method="POST" action="{{ route('categories.update', $category->slug) }}">

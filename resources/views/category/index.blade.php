@@ -4,7 +4,7 @@
         <div class="row">
             <div class="col-md-12">
                 <div class="card-header">
-                    Categories
+                    Categories @can('restore', \App\Category::class) | <a class="text-dark" href="{{ route('categories.destroyed') }}">Restore Destroyed Categories</a>@endcan
                 </div>
             </div>
             <div class="col-md-12">

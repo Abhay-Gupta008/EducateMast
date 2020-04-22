@@ -22,6 +22,7 @@ class CreatePostsTable extends Migration
             $table->unsignedBigInteger('author_id');
             $table->unsignedBigInteger('category_id');
             $table->timestamps();
+            $table->softDeletes();
 
             $table->index('author_id');
             $table->index('category_id');

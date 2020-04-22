@@ -21,6 +21,12 @@ Route::group(['middleware' => ['auth', 'staff'], 'prefix' => 'admin'], function(
 
 Route::resource('categories', 'CategoryController', ['except' => ['show', 'edit', 'update', 'destroy']]);
 
+Route::post('categories/{id}', 'CategoryController@restore')->name('categories.restore');
+
+Route::get('categories/destroyed', 'CategoryController@destroyed')->name('categories.destroyed');
+
+Route::delete('categories/{category:slug}', 'CategoryController@destroy')->name('categories.destroy');
+
 Route::get('categories/{category:slug}', 'CategoryController@show')->name('categories.show');
 
 Route::get('categories/{category:slug}/edit', 'CategoryController@edit')->name('categories.edit');
