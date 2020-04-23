@@ -108,7 +108,7 @@ class PostController extends Controller
         if ($request->slug == $post->slug) {
              $validatedData = $request->validate([
                 'title' => ['required', 'min:3', 'max:255'],
-                'body' => ['required', 'min:10', 'max:500'],
+                'body' => ['required', 'min:10', 'max:1200'],
                 'category' => ['required'],
             ]);
 
@@ -181,7 +181,7 @@ class PostController extends Controller
     private function validator(Request $request) {
         return $request->validate([
             'title' => ['required', 'min:3', 'max:255'],
-            'body' => ['required', 'min:10', 'max:500'],
+            'body' => ['required', 'min:10', 'max:1200'],
             'slug' => ['unique:posts', 'min:2', 'max:40'],
             'category' => ['required'],
         ]);
