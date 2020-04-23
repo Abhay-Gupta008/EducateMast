@@ -49,6 +49,12 @@ Route::get('posts/destroyed', 'PostController@destroyed')->name('posts.destroyed
 
 Route::post('posts/{id}', 'PostController@restore')->name('posts.restore');
 
+Route::get('profiles/{user:username}', 'ProfileController@show')->name('profiles.show');
+
+Route::get('profiles/{user:username}/edit', 'ProfileController@edit')->name('profiles.edit');
+
+Route::patch('profiles/{user:username}', 'ProfileController@update')->name('profiles.update');
+
 Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');

@@ -2,11 +2,11 @@
 
 namespace App\Policies;
 
-use App\Post;
+use App\Profile;
 use App\User;
 use Illuminate\Auth\Access\HandlesAuthorization;
 
-class PostPolicy
+class ProfilePolicy
 {
     use HandlesAuthorization;
 
@@ -25,10 +25,10 @@ class PostPolicy
      * Determine whether the user can view the model.
      *
      * @param  \App\User  $user
-     * @param  \App\Post  $post
+     * @param  \App\Profile  $profile
      * @return mixed
      */
-    public function view(User $user, Post $post)
+    public function view(User $user, Profile $profile)
     {
         //
     }
@@ -48,22 +48,22 @@ class PostPolicy
      * Determine whether the user can update the model.
      *
      * @param  \App\User  $user
-     * @param  \App\Post  $post
+     * @param  \App\Profile  $profile
      * @return mixed
      */
-    public function update(User $user, Post $post)
+    public function update(User $user, Profile $profile)
     {
-        return $user->hasRole('admin');
+        return $user->id === $profile->user_id;
     }
 
     /**
      * Determine whether the user can delete the model.
      *
      * @param  \App\User  $user
-     * @param  \App\Post  $post
+     * @param  \App\Profile  $profile
      * @return mixed
      */
-    public function delete(User $user, Post $post)
+    public function delete(User $user, Profile $profile)
     {
         //
     }
@@ -72,10 +72,10 @@ class PostPolicy
      * Determine whether the user can restore the model.
      *
      * @param  \App\User  $user
-     * @param  \App\Post  $post
+     * @param  \App\Profile  $profile
      * @return mixed
      */
-    public function restore(User $user, Post $post)
+    public function restore(User $user, Profile $profile)
     {
         //
     }
@@ -84,10 +84,10 @@ class PostPolicy
      * Determine whether the user can permanently delete the model.
      *
      * @param  \App\User  $user
-     * @param  \App\Post  $post
+     * @param  \App\Profile  $profile
      * @return mixed
      */
-    public function forceDelete(User $user, Post $post)
+    public function forceDelete(User $user, Profile $profile)
     {
         //
     }

@@ -44,6 +44,10 @@ class User extends Authenticatable
         static::created(function($user) {
             $userRole = Role::role('user')->first();
             $user->roles()->attach($userRole->id);
+            Profile::create([
+                'bio' => 'Hello there, I use EducateMast',
+                'user_id' => $user->id,
+            ]);
         });
     }
 
@@ -59,6 +63,14 @@ class User extends Authenticatable
         $role = Role::role($roleName)->first();
 
         return $this->roles->contains($role->id);
+    }
+
+    public function canPost() {
+        return $this->hasRole('Admin') || $this->hasRole("Author");
+    }
+
+    public function profile() {
+        return $this->hasOne(Profile::class);
     }
 
 }
