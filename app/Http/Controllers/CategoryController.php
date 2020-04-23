@@ -61,8 +61,9 @@ class CategoryController extends Controller
      */
     public function show(Category $category)
     {
+        $url = '@(http)?(s)?(://)?(([a-zA-Z])([-\w]+\.)+([^\s\.]+[^\s]*)+[^,.\s])@';
         $posts = Post::where('category_id', $category->id)->orderBy('created_at', 'desc')->paginate(5);
-        return response()->view('category.show', compact('category', 'posts'));
+        return response()->view('category.show', compact('category', 'posts', 'url'));
     }
 
     /**
