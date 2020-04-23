@@ -10,7 +10,7 @@
             <div class="col-md-12">
                 <div class="bg-white">
                     <div class="card-body">
-                        {!! preg_replace($url, '<a href="http$2://$4" target="_blank" title="$0">$0</a>', $post->body) !!}
+                        <pre><div style="font-family: Nunito; font-size:15px"><?php echo preg_replace($url, '<a href="http$2://$4" target="_blank" title="$0">$0</a>', e($post->body)); ?></div></pre>
                     </div>
                 </div>
             </div>
