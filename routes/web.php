@@ -33,7 +33,7 @@ Route::get('categories/{category:slug}/edit', 'CategoryController@edit')->name('
 
 Route::patch('categories/{category:slug}', 'CategoryController@update')->name('categories.update');
 
-Route::resource('posts', 'PostController', ['except' => ['show', 'index', 'edit', 'update']]);
+Route::resource('posts', 'PostController', ['except' => ['show', 'index', 'edit', 'update', 'destroy']]);
 
 Route::get('/', 'PostController@index')->name('posts.index');
 
@@ -42,6 +42,12 @@ Route::get('posts/{category:slug}/{post:slug}', 'PostController@show')->name('po
 Route::get('posts/{category:slug}/{post:slug}/edit', 'PostController@edit')->name('posts.edit');
 
 Route::patch('posts/{category:slug}/{post:slug}', 'PostController@update')->name('posts.update');
+
+Route::delete('posts/{category:slug}/{post:slug}', 'PostController@destroy')->name('posts.destroy');
+
+Route::get('posts/destroyed', 'PostController@destroyed')->name('posts.destroyed');
+
+Route::post('posts/{id}', 'PostController@restore')->name('posts.restore');
 
 Auth::routes();
 

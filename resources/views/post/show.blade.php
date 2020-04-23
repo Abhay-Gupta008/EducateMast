@@ -10,7 +10,7 @@
             <div class="col-md-12">
                 <div class="bg-white">
                     <div class="card-body">
-                        {!! nl2br(e($post->body)) !!}
+                        {!! preg_replace($url, '<a href="http$2://$4" target="_blank" title="$0">$0</a>', nl2br(e($post->body))) !!}
                     </div>
                 </div>
             </div>

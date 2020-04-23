@@ -14,7 +14,7 @@ class PostController extends Controller
     {
         $this->middleware('auth')->except('index', 'show');
         $this->middleware('staff')->except('index', 'show');
-        $this->middleware('admin')->only('edit', 'update');
+        $this->middleware('admin')->only('edit', 'update', 'destroyed', 'restore');
     }
 
     /**
@@ -24,9 +24,10 @@ class PostController extends Controller
      */
     public function index()
     {
+        $url = '@(http)?(s)?(://)?(([a-zA-Z])([-\w]+\.)+([^\s\.]+[^\s]*)+[^,.\s])@';
         $latestPosts = Post::with('category')->orderBy('created_at', 'desc')->paginate(2);
         $posts = Post::orderBy('created_at', 'desc')->with('category')->paginate(5);
-        return response()->view('post.index', compact('latestPosts', 'posts'));
+        return response()->view('post.index', compact('latestPosts', 'posts', 'url'));
     }
 
     /**
@@ -76,7 +77,8 @@ class PostController extends Controller
      */
     public function show(Category $category, Post $post)
     {
-        return response()->view('post.show', compact('post'));
+        $url = '@(http)?(s)?(://)?(([a-zA-Z])([-\w]+\.)+([^\s\.]+[^\s]*)+[^,.\s])@';
+        return response()->view('post.show', compact('post', 'url'));
     }
 
     /**
@@ -110,9 +112,24 @@ class PostController extends Controller
                 'category' => ['required'],
             ]);
 
-             $post->update($validatedData);
+            $excerpt = substr($validatedData['body'], 0, 30).'...';
+
+             $post->update([
+                 'title' => $validatedData['title'],
+                 'body' => $validatedData['body'],
+                 'category' => $validatedData['category'],
+                 'excerpt' => $excerpt,
+             ]);
         } else {
-            $post->update($this->validator($request));
+            $data = $this->validator($request);
+            $excerpt = substr($data['body'], 0, 30).'...';
+            $post->update([
+                'title' => $data['title'],
+                'body' => $data['body'],
+                'slug' => $data['slug'],
+                'category' => $data['category'],
+                'excerpt' => $excerpt,
+            ]);
         }
 
         $post->save();
@@ -126,11 +143,39 @@ class PostController extends Controller
      * Remove the specified resource from storage.
      *
      * @param  \App\Post  $post
+     * @param \App\Category $category
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Post $post)
+    public function destroy(Category $category, Post $post)
     {
-        //
+        $post->delete();
+        session()->flash('message', 'The post has been deleted');
+
+        return response()->redirectTo(route('posts.index'));
+    }
+
+    /**
+     * Display the listing of destroyed posts.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function destroyed() {
+        $destroyedPosts = Post::onlyTrashed()->paginate(5);
+        return response()->view('post.destroyed', compact('destroyedPosts'));
+    }
+
+    /**
+     * Restore the specified resource in storage.
+     *
+     * @param int $id
+     * @return \Illuminate\Http\Response
+     */
+    public function restore(int $id) {
+        $post = Post::onlyTrashed()->findOrFail($id);
+        $post->restore();
+        session()->flash('message', 'The post has been restored');
+
+        return response()->redirectTo(route('posts.index'));
     }
 
     private function validator(Request $request) {

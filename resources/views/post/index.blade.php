@@ -11,7 +11,7 @@
                         <div class="card-header"><a class="text-dark" href="{{ route('posts.show', [$latestPost->category->slug, $latestPost->slug]) }}">{{ $latestPost->title }}</a></div>
 
                         <div class="card-body">
-                            {{ $latestPost->excerpt }}
+                            {!! preg_replace($url, '<a href="http$2://$4" target="_blank" title="$0">$0</a>', $latestPost->excerpt) !!}
                         </div>
                     </div>
                 @endforeach
@@ -24,7 +24,7 @@
                         <div class="card-header"><a class="text-dark" href="{{ route('posts.show', [$post->category->slug, $post->slug]) }}">{{ $post->title }}</a></div>
 
                         <div class="card-body">
-                            {{ $post->excerpt }}
+                            {!! preg_replace($url, '<a href="http$2://$4" target="_blank" title="$0">$0</a>', $post->excerpt) !!}
                         </div>
                     </div>
                 @endforeach
