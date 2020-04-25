@@ -73,4 +73,8 @@ class User extends Authenticatable
         return $this->hasOne(Profile::class);
     }
 
+    public function author_submission() {
+        return $this->hasOne(AuthorSubmission::class);
+    }
+
 }

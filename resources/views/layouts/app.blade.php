@@ -64,6 +64,12 @@
                                         {{ __('Edit My Profile') }}
                                     </a>
 
+                                    @can('viewAdminDashboard')
+                                        <a class="dropdown-item" href="{{ route('admin.dashboard.show') }}">
+                                            {{ __('Admin Dashboard') }}
+                                        </a>
+                                    @endcan
+
                                     <a class="dropdown-item" href="{{ route('logout') }}"
                                        onclick="event.preventDefault();
                                                      document.getElementById('logout-form').submit();">

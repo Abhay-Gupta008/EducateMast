@@ -41,7 +41,7 @@ class PostPolicy
      */
     public function create(User $user)
     {
-        //
+        return $user->hasRole('admin') || $user->hasRole('author');
     }
 
     /**
@@ -63,9 +63,9 @@ class PostPolicy
      * @param  \App\Post  $post
      * @return mixed
      */
-    public function delete(User $user, Post $post)
+    public function delete(User $user, Post $post = null)
     {
-        //
+        return $user->hasRole('admin');
     }
 
     /**
@@ -75,9 +75,9 @@ class PostPolicy
      * @param  \App\Post  $post
      * @return mixed
      */
-    public function restore(User $user, Post $post)
+    public function restore(User $user, Post $post = null)
     {
-        //
+        return $user->hasRole('admin');
     }
 
     /**

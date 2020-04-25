@@ -14,9 +14,11 @@ use Illuminate\Support\Facades\Route;
 */
 
 
-Route::group(['middleware' => ['auth', 'staff'], 'prefix' => 'admin'], function() {
-    Route::get('dashboard', function() {
-    });
+Route::name('admin.')->prefix('admin')->group(function() {
+    Route::get('dashboard', 'Admin\DashboardController@show')->name('dashboard.show');
+    Route::get('telescope', function() {
+        return response()->redirectTo('/telescope');
+    })->name('telescope.show');
 });
 
 Route::resource('categories', 'CategoryController', ['except' => ['show', 'edit', 'update', 'destroy']]);
@@ -55,7 +57,10 @@ Route::get('profiles/{user:username}/edit', 'ProfileController@edit')->name('pro
 
 Route::patch('profiles/{user:username}', 'ProfileController@update')->name('profiles.update');
 
+Route::get('author-apply', "Misc\AuthorFormController@show")->name('author-form.show');
+Route::get('author-apply/requirements', 'Misc\AuthorFormController@index')->name('author-form.index');
+Route::post('author-apply', "Misc\AuthorFormController@store")->name('author-form.store');
+
 Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
-

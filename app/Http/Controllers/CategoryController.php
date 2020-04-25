@@ -6,6 +6,7 @@ use App\Category;
 use App\Post;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
+use Illuminate\Support\Facades\Gate;
 
 class CategoryController extends Controller
 {
@@ -74,6 +75,7 @@ class CategoryController extends Controller
      */
     public function edit(Category $category)
     {
+        Gate::authorize('edit', $category);
         return response()->view('category.edit', compact('category'));
     }
 
@@ -86,6 +88,7 @@ class CategoryController extends Controller
      */
     public function update(Request $request, Category $category)
     {
+        Gate::authorize('update', $category);
         if ($request->Input('slug') == $category->slug) {
             $validated = $request->validate([
                 'name' => ['required', 'max:255'],

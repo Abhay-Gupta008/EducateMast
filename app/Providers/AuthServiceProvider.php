@@ -8,6 +8,7 @@ use App\Policies\PostPolicy;
 use App\Policies\ProfilePolicy;
 use App\Post;
 use App\Profile;
+use App\User;
 use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
 use Illuminate\Support\Facades\Gate;
 
@@ -34,6 +35,8 @@ class AuthServiceProvider extends ServiceProvider
     {
         $this->registerPolicies();
 
-        //
+        Gate::define('viewAdminDashboard', function(User $user) {
+            return $user->hasRole('admin') || $user->hasRole('author');
+        });
     }
 }
