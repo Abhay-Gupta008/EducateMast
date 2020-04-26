@@ -38,5 +38,9 @@ class AuthServiceProvider extends ServiceProvider
         Gate::define('viewAdminDashboard', function(User $user) {
             return $user->hasRole('admin') || $user->hasRole('author');
         });
+
+        Gate::define('addAuthors', function(User $user) {
+            return $user->hasRole('admin');
+        });
     }
 }

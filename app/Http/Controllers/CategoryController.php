@@ -7,6 +7,7 @@ use App\Post;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Gate;
+use Illuminate\Support\Str;
 
 class CategoryController extends Controller
 {
@@ -48,7 +49,13 @@ class CategoryController extends Controller
      */
     public function store(Request $request)
     {
-        $category = Category::create($this->validator($request));
+        $validatedData = $this->validator($request);
+        $slug = Str::slug($validatedData['slug']);
+
+        $category = Category::create([
+            'name' => $validatedData['name'],
+            'slug' => $slug
+        ]);
 
         session()->flash('message', 'The category has been added!');
         return redirect(route('categories.index'));
@@ -96,7 +103,13 @@ class CategoryController extends Controller
 
             $category->update($validated);
         } else {
-            $category->update($this->validator($request));
+            $validatedData = $this->validator($request);
+            $slug = Str::slug($validatedData['slug']);
+
+            $category->update([
+                'name' => $validatedData['name'],
+                'slug' => $slug,
+            ]);
         }
         $category->save();
 

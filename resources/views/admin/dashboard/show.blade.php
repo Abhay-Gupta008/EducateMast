@@ -37,6 +37,10 @@
                         @can('delete', \App\Post::class)
                             <div class="col-md-12">You can delete a post by editing it.</div>
                         @endcan
+
+                        @can('addAuthors')
+                            <author-add-component token="{{ Auth::user()->api_token }}"></author-add-component>
+                        @endcan
                     </div>
                 </div>
             </div>

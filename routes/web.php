@@ -19,6 +19,8 @@ Route::name('admin.')->prefix('admin')->group(function() {
     Route::get('telescope', function() {
         return response()->redirectTo('/telescope');
     })->name('telescope.show');
+
+    Route::post('add/author/{user:username}', 'Admin\AdminController@store')->name('new-author.store');
 });
 
 Route::resource('categories', 'CategoryController', ['except' => ['show', 'edit', 'update', 'destroy']]);
@@ -64,3 +66,7 @@ Route::post('author-apply', "Misc\AuthorFormController@store")->name('author-for
 Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
+
+Route::get('/test/{user}', 'Api\UserSearchController@search');
+
+//Route::get('/users/search/{user}', 'Api\UserSearchController@search');
