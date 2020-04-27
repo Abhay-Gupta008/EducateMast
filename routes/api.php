@@ -19,5 +19,3 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 });
 
 Route::post('users/search/{user}', 'Api\UserSearchController@search')->middleware('auth:api');
-
-Route::post('/calculate/slug/{slug}', 'Api\Calculator@slug');
