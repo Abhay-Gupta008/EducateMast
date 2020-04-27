@@ -68,5 +68,3 @@ Auth::routes();
 Route::get('/home', 'HomeController@index')->name('home');
 
 Route::get('/test/{user}', 'Api\UserSearchController@search');
-
-//Route::get('/users/search/{user}', 'Api\UserSearchController@search');

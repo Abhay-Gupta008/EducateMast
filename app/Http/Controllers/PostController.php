@@ -2,11 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Rules\Slug;
 use Auth;
 use App\Category;
 use App\Post;
 use Illuminate\Http\Request;
-use Illuminate\Support\Str;
 
 class PostController extends Controller
 {
@@ -54,13 +54,13 @@ class PostController extends Controller
     public function store(Request $request)
     {
         $validatedData = $this->validator($request);
+
         $excerpt = substr($validatedData['body'], 0, 30).'...';
-        $slug = Str::slug($validatedData['slug']);
         $post = Post::create([
             'title' => $validatedData['title'],
             'body' => $validatedData['body'],
             'excerpt' => $excerpt,
-            'slug' => $slug,
+            'slug' => $validatedData['slug'],
             'category_id' => $validatedData['category'],
             'author_id' => Auth::user()->id,
         ]);
@@ -124,12 +124,11 @@ class PostController extends Controller
              ]);
         } else {
             $data = $this->validator($request);
-            $slug = Str::slug($data['slug']);
             $excerpt = substr($data['body'], 0, 30).'...';
             $post->update([
                 'title' => $data['title'],
                 'body' => $data['body'],
-                'slug' => $slug,
+                'slug' => $data['slug'],
                 'category' => $data['category'],
                 'excerpt' => $excerpt,
             ]);
@@ -185,7 +184,7 @@ class PostController extends Controller
         return $request->validate([
             'title' => ['required', 'min:3', 'max:255'],
             'body' => ['required', 'min:10', 'max:1200'],
-            'slug' => ['unique:posts', 'min:2', 'max:40'],
+            'slug' => ['unique:posts', 'min:2', 'max:40', 'required', new Slug()],
             'category' => ['required'],
         ]);
     }

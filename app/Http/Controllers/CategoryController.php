@@ -4,10 +4,10 @@ namespace App\Http\Controllers;
 
 use App\Category;
 use App\Post;
+use App\Rules\Slug;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Gate;
-use Illuminate\Support\Str;
 
 class CategoryController extends Controller
 {
@@ -50,11 +50,10 @@ class CategoryController extends Controller
     public function store(Request $request)
     {
         $validatedData = $this->validator($request);
-        $slug = Str::slug($validatedData['slug']);
 
         $category = Category::create([
             'name' => $validatedData['name'],
-            'slug' => $slug
+            'slug' => $validatedData['slug'],
         ]);
 
         session()->flash('message', 'The category has been added!');
@@ -104,11 +103,10 @@ class CategoryController extends Controller
             $category->update($validated);
         } else {
             $validatedData = $this->validator($request);
-            $slug = Str::slug($validatedData['slug']);
 
             $category->update([
                 'name' => $validatedData['name'],
-                'slug' => $slug,
+                'slug' => $validatedData['slug'],
             ]);
         }
         $category->save();
@@ -165,7 +163,7 @@ class CategoryController extends Controller
     private function validator(Request $request) {
         return $request->validate([
            'name' => ['required', 'max:255'],
-           'slug' => ['required', 'max:255', 'min:3', 'unique:categories'],
+           'slug' => ['required', 'max:255', 'min:3', 'unique:categories', new Slug()],
         ]);
     }
 
