@@ -1,4 +1,5 @@
 @extends('layouts.app')
+@section('description')Welcome to EducateMast | Check out all these blogs!@endsection
 @section('content')
     <div class="container">
         <div class="row">
