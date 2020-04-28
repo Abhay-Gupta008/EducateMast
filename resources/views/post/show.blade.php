@@ -1,4 +1,5 @@
 @extends('layouts.app')
+@section('description')Check out this post on {{ env('APP_NAME') }} | {{ $post->title }}@endsection
 @section('content')
     <div class="container">
         <div class="row">
