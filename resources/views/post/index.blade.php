@@ -12,7 +12,7 @@
                         <div class="card-header"><a class="text-dark" href="{{ route('posts.show', [$latestPost->category->slug, $latestPost->slug]) }}">{{ $latestPost->title }}</a></div>
 
                         <div class="card-body">
-                            <pre><div style="font-family: Nunito; font-size:15px"><?php echo preg_replace($url, '<a href="http$2://$4" target="_blank" title="$0">$0</a>', e($latestPost->excerpt)); ?></div></pre>
+                            <pre><div class="col-md-12" style="font-family: Nunito; font-size:15px"><?php echo preg_replace($url, '<a href="http$2://$4" target="_blank" title="$0">$0</a>', e($latestPost->excerpt)); ?></div></pre>
                         </div>
                     </div>
                 @endforeach
@@ -25,7 +25,7 @@
                         <div class="card-header"><a class="text-dark" href="{{ route('posts.show', [$post->category->slug, $post->slug]) }}">{{ $post->title }}</a></div>
 
                         <div class="card-body">
-                            <pre><div style="font-family: Nunito; font-size:15px"><?php echo preg_replace($url, '<a href="http$2://$4" target="_blank" title="$0">$0</a>', e($post->excerpt)); ?></div></pre>
+                            <pre><div class="col-md-12" style="font-family: Nunito, sans-serif; font-size:1rem;"><?php echo preg_replace($url, '<a href="http$2://$4" target="_blank" title="$0">$0</a>', e($post->excerpt)); ?></div></pre>
                         </div>
                     </div>
                 @endforeach

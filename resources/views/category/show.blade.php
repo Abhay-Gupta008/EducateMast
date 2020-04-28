@@ -15,7 +15,7 @@
                 <div class="col-md-12">
                         <div class="bg-white mb-3">
                             <div class="card-header"><a class="text-dark" href="{{ route('posts.show', [$category->slug, $post->slug]) }}">{{ $post->title }}</a></div>
-                            <div class="card-body"><pre><div style="font-family: Nunito; font-size:15px"><?php echo preg_replace($url, '<a href="http$2://$4" target="_blank" title="$0">$0</a>', e($post->excerpt)); ?></div></pre></div>
+                            <div class="card-body"><pre><div style="font-family: Nunito, sans-serif; font-size:1rem;" class="col-md-12"><?php echo preg_replace($url, '<a href="http$2://$4" target="_blank" title="$0">$0</a>', e($post->excerpt)); ?></div></pre></div>
                         </div>
                     </div>
                 @endforeach
