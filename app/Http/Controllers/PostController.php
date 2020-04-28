@@ -25,7 +25,7 @@ class PostController extends Controller
      */
     public function index()
     {
-        $url = '@(http)?(s)?(://)?(([a-zA-Z])([-\w]+\.)+([^\s\.]+[^\s]*)+[^,.\s])@';
+        $url = '@(http)?(s)?(://)?(([a-zA-Z])([-\w]+\.)+([^\s\.]+[^\s]*)+[^,.\s)])@';
         $latestPosts = Post::with('category')->orderBy('created_at', 'desc')->paginate(2);
         $posts = Post::orderBy('created_at', 'desc')->with('category')->paginate(5);
         return response()->view('post.index', compact('latestPosts', 'posts', 'url'));
@@ -79,7 +79,7 @@ class PostController extends Controller
      */
     public function show(Category $category, Post $post)
     {
-        $url = '@(http)?(s)?(://)?(([a-zA-Z])([-\w]+\.)+([^\s\.]+[^\s]*)+[^,.\s])@';
+        $url = '@(http)?(s)?(://)?(([a-zA-Z])([-\w]+\.)+([^\s\.]+[^\s]*)+[^,.\s)])@';
         return response()->view('post.show', compact('post', 'url'));
     }
 
