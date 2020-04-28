@@ -11,7 +11,7 @@
             <div class="col-md-12">
                 <div class="bg-white">
                     <div class="card-body">
-                        <div class="col-md-12"><strong>Created At: {{ $post->created_at->format('g:i A, d M, Y') }} | Edited at: {{ $post->updated_at->format('g:i A, d M, Y') }}</strong></div>
+                        <div class="col-md-12"><strong>Created At: {{ $post->created_at->format('g:i A, d M, Y') }}@if($post->created_at != $post->updated_at) | Edited at: {{ $post->updated_at->format('g:i A, d M, Y') }}@endif</strong></div>
                         <div class="col-md-12"><hr /></div>
                         <pre><div class="col-md-12" style="font-family: Nunito, sans-serif; font-size:1rem;"><?php echo preg_replace($url, '<a href="http$2://$4" target="_blank" title="$0">$0</a>', e($post->body)); ?></div></pre>
                     </div>
