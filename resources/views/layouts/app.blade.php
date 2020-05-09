@@ -44,7 +44,7 @@
         </div>
     </div>
 </nav>
-<main id="app">
+<main id="app" style="min-height: 45vh;">
     <div class="container">
         @if(session()->has('message'))
             <div class="alert alert-primary" role="alert">
