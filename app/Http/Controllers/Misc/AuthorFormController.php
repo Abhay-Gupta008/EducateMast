@@ -21,7 +21,7 @@ class AuthorFormController extends Controller
     }
 
     public function show() {
-        if (!Auth::user()->hasRole('admin') || Auth::user()->hasRole('Author')) {
+        if (!Auth::user()->hasRole('admin') || !Auth::user()->hasRole('Author')) {
             if (Auth::user()->author_submission == null) {
                 $showForm = true;
                 $alreadyStaff = false;

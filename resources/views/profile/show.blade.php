@@ -1,40 +1,49 @@
 @extends('layouts.app')
 @section('content')
-    <div class="container">
-        <div class="row">
-            <div class="col-md-1 ml-2">
-                @if($profile->image)<img class="rounded-circle" src="{{ asset('storage/'.$profile->image) }}">@endif
-            </div>
-            <div class="col-md-5 pb-2 mt-2">
-                <div class="d-flex justify-content-center"><h3>{{ $profile->user->name }}</h3>@can('update', $profile)<h6 class="mt-2 ml-2"><a class="text-dark" href="{{ route('profiles.edit', $profile->user->username) }}">Edit Profile</a></h6>@endcan</div><div class="font-weight-bolder d-flex justify-content-center">{{ $profile->user->username }}</div>
-            </div>
-            <div class="col-md-5 pb-2 mt-2">
-                <div class="d-flex justify-content-center">
-                    @if($profile->user->canPost())<div class="font-weight-bold mr-3">Posts: {{ $profile->user->posts->count() }}</div>@endif
-                    <div class="font-weight-bold">Joined on: {{ $profile->user->created_at->format('jS F, Y') }}</div>
+    <div class="text-center profile-card" style="margin:15px;background-color:#ffffff;">
+        <div class="profile-card-img" style="background-image:url(&quot;iceland.jpg&quot;);height:150px;background-size:cover;"></div>
+        <div><img class="rounded-circle mb-2" style="margin-top:-70px;" src="{{ asset($profile->profile_image()) }}" height="150px">
+            <h3><div class="font-weight-bolder">{{ $profile->user->name }}</div><div class="font-weight-bold">{{'@'.$profile->user->username }}</div></h3><h4>{!! $profile->user->badges() !!}</h4>
+            <p style="padding:20px;padding-bottom:0;padding-top:5px;">{{ $profile->bio }}</p>
+        </div>
+        <div class="row" style="padding:0;padding-bottom:10px;padding-top:20px;">
+            @if($profile->user->canPost())
+                <div class="col-md-12">
+                    <p class="text-nowrap text-center">Posts</p>
+                    <p class="text-center"><strong>{{ $profile->user->posts->count() }}</strong> </p>
                 </div>
-                <div class="d-flex justify-content-center">{{ $profile->bio }}</div>
-            </div>
-            <div class="col-md-12"><hr/></div>
+                <div class="col-md-12">
+                    <p class="text-center">Comments</p>
+                    <p class="text-center"><strong>{{ $profile->user->comments->count() }}</strong> </p>
+                </div>
+                </div>
+                <div class="col-md-12">
+                    <p class="text-center">Joined on</p>
+                    <p class="text-center"><strong>{{ $profile->user->created_at->format('d F, Y') }}</strong> </p>
+                </div>
+            @else
+                <div class="col-md-12">
+                    <p class="text-center">Comments</p>
+                    <p class="text-center"><strong>{{ $profile->user->comments->count() }}</strong> </p>
+                </div>
             <div class="col-md-12">
-                @if(! $profile->user->canPost())
-                    <h3 class="text-center">This user can't create posts</h3>
-                @endif
-                @if($profile->user->canPost())
-                        @foreach($profile->user->posts as $post)
-                            <div class="mb-3 bg-white">
-                                <div class="card-header"><a class="text-dark" href="{{ route('posts.show', [$post->category->slug, $post->slug]) }}">{{ $post->title }}</a></div>
-
-                                <div class="card-body">
-                                    {{ $post->excerpt }}
-                                </div>
-                            </div>
-                        @endforeach
-                        @if($profile->user->posts->count() == 0)
-                            <h3 class="text-center">No posts yet</h3>
-                        @endif
-                    @endif
+                <p class="text-center">Joined on</p>
+                <p class="text-center"><strong>{{ $profile->user->created_at->format('d F, Y') }}</strong> </p>
             </div>
+            @endif
         </div>
     </div>
+    @if($profile->user->canPost())
+        @foreach($posts as $post)
+            <div class="card">
+                <div class="card-body">
+                    <h4 class="card-title">{{ $post->title }}</h4>
+                    <h6 class="text-muted card-subtitle mb-2">Category: <a class="text-dark" href="{{ route('categories.show', [$post->category->slug]) }}">{{ $post->category->name }}</a></h6>
+                    <p class="card-text">{{ $post->excerpt }}</p>
+                    <a class="card-link" href="{{ route('posts.show', [$post->category->slug, $post->slug]) }}">View Post</a>
+                </div>
+            </div>
+        @endforeach
+        @if($posts->links() != '')<div class="mt-4 d-flex justify-content-center">{{ $posts->links() }}</div>@endif
+    @endif
 @endsection

@@ -1,12 +1,12 @@
 @extends('layouts.app')
 @section('content')
-    <div class="container">
+    <div class="container mb-5">
         <div class="row">
             <div class="col-md-12">
                 <div class="card-header">Make a new Post</div>
             </div>
             <div class="col-md-12">
-                <div class="bg-white">
+                <div class="bg-light">
                     <div class="card-body">
                         <form method="post" action="{{ route('posts.store') }}">
                             @include('post.extras.form')

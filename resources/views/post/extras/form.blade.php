@@ -15,31 +15,45 @@
 </div>
 
 <div class="form-group row">
-    <label for="body" class="col-md-1 col-form-label text-md-right">{{ __('Body') }}</label>
+    <label for="raw-body" class="col-md-1 col-form-label text-md-right">{{ __('Body') }}</label>
 
     <div class="col-md-11">
-        <textarea style="resize: none" rows="9" id="body" type="text" class="form-control @error('body') is-invalid @enderror" name="body" required autocomplete="body">{{ old('body') ?? $post->body }}</textarea>
+        <textarea style="resize: none" rows="9" id="raw_body" type="text" class="form-control @error('raw-body') is-invalid @enderror" name="raw-body" required autocomplete="body">{{ old('raw-body') ?? $post->raw_body }}</textarea>
 
-        @error('body')
+        @error('raw-body')
         <span class="invalid-feedback" role="alert">
-                                            <strong>{{ $message }}</strong>
-                                        </span>
+            <strong>{{ $message }}</strong>
+        </span>
         @enderror
     </div>
 </div>
 
 <div class="form-group row">
-    <label for="slug" class="col-md-1 col-form-label text-md-right">{{ __('Slug') }}</label>
+    <label for="excerpt" class="col-md-1 col-form-label text-md-right">{{ __('Excerpt') }}</label>
 
         <div class="col-md-11">
-            <input id="slug" type="text" class="form-control @error('slug') is-invalid @enderror" name="slug" value="{{ old('slug') ?? $post->slug }}" required autocomplete="slug">
+            <input id="excerpt" type="text" class="form-control @error('excerpt') is-invalid @enderror" name="excerpt" value="{{ old('excerpt') ?? $post->excerpt }}" required autocomplete="excerpt">
 
-            @error('slug')
+            @error('excerpt')
             <span class="invalid-feedback" role="alert">
             <strong>{{ $message }}</strong>
         </span>
             @enderror
         </div>
+</div>
+
+<div class="form-group row">
+    <label for="slug" class="col-md-1 col-form-label text-md-right">{{ __('Slug') }}</label>
+
+    <div class="col-md-11">
+        <input id="slug" type="text" class="form-control @error('slug') is-invalid @enderror" name="slug" value="{{ old('slug') ?? $post->slug }}" required autocomplete="slug">
+
+        @error('slug')
+        <span class="invalid-feedback" role="alert">
+            <strong>{{ $message }}</strong>
+        </span>
+        @enderror
+    </div>
 </div>
 
     <div class="form-group row">

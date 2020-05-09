@@ -6,7 +6,7 @@ use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 
-class User extends Authenticatable
+class User extends Authenticatable implements MustVerifyEmail
 {
     use Notifiable;
 
@@ -75,6 +75,27 @@ class User extends Authenticatable
 
     public function author_submission() {
         return $this->hasOne(AuthorSubmission::class);
+    }
+
+    public function comments() {
+        return $this->hasMany(Comment::class);
+    }
+
+    public function badges() {
+        $badges = '';
+        if ($this->hasRole('admin')) {
+            $badges = $badges.'<span class="badge badge-primary mr-2">Admin</span>';
+        }
+
+        if ($this->hasRole('author')) {
+            $badges = $badges.'<span class="badge badge-secondary mr-2">Author</span>';
+        }
+
+        return $badges;
+    }
+
+    public function contact_us_submissions() {
+        return $this->hasMany(ContactUsSubmissions::class);
     }
 
 }

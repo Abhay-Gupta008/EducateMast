@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Post;
 use App\Profile;
 use App\User;
 use Illuminate\Http\Request;
@@ -38,6 +39,7 @@ class ProfileController extends Controller
     }
 
     /**
+     *
      * Store a newly created resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
@@ -57,7 +59,8 @@ class ProfileController extends Controller
     public function show(User $user)
     {
         $profile = $user->profile;
-        return response()->view('profile.show', compact('profile'));
+        $posts = Post::where('author_id', $user->id)->with('category')->latest()->paginate(4);
+        return response()->view('profile.show', compact('profile', 'posts'));
     }
 
     /**
@@ -82,23 +85,26 @@ class ProfileController extends Controller
      */
     public function update(Request $request, User $user)
     {
-        //Gate::authorize('update', $user->profile);
+        Gate::authorize('update', $user->profile);
 
         $validatedData = $this->validator($request);
 
-        $profile = Profile::findOrFail($user->profile->id);
+         $profile = $user->profile()->firstOrFail();
 
-        $profile->update([
-            'bio' => $validatedData['bio'],
-        ]);
 
-        $user->update([
-            'name' => $validatedData['name']
-        ]);
+        $profile->bio = $validatedData['bio'];
 
-        $user->save();
+        $user->name = $validatedData['name'];
+
+        if (!$request->has('receive_emails')) {
+            $profile->receive_emails = false;
+        } else {
+            $profile->receive_emails = true;
+        }
 
         $profile->save();
+
+        $user->save();
 
         $this->storeImage($profile, $request);
 
@@ -124,6 +130,7 @@ class ProfileController extends Controller
             'name' => ['required', 'max:255', 'min:5', 'string'],
             'bio' => ['required', 'max:255', 'string', 'min:5'],
             'image' => ['sometimes', 'image', 'file', 'max:5000'],
+            'receive_emails' => [],
         ]);
     }
 
@@ -133,7 +140,7 @@ class ProfileController extends Controller
                 'image' => $request->image->store('uploads', 'public'),
             ]);
 
-            $image = Image::make(public_path('storage/'.$profile->image))->fit(100, 100);
+            $image = Image::make(public_path('storage/'.$profile->image))->fit(300, 300);
             $image->save();
         }
     }

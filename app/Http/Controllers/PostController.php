@@ -2,11 +2,13 @@
 
 namespace App\Http\Controllers;
 
+use App\Events\PostCreated;
 use App\Rules\Slug;
 use Auth;
 use App\Category;
 use App\Post;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Gate;
 
 class PostController extends Controller
 {
@@ -15,7 +17,7 @@ class PostController extends Controller
     {
         $this->middleware('auth')->except('index', 'show');
         $this->middleware('staff')->except('index', 'show');
-        $this->middleware('admin')->only('edit', 'update', 'destroyed', 'restore');
+        $this->middleware('admin')->only('destroyed', 'restore');
     }
 
     /**
@@ -25,10 +27,9 @@ class PostController extends Controller
      */
     public function index()
     {
-        $url = '@(http)?(s)?(://)?(([a-zA-Z])([-\w]+\.)+([^\s\.]+[^\s]*)+[^,.\s)])@';
-        $latestPosts = Post::with('category')->orderBy('created_at', 'desc')->paginate(2);
+        $latestPosts = Post::with('category')->latest()->paginate(2);
         $posts = Post::orderBy('created_at', 'desc')->with('category')->paginate(5);
-        return response()->view('post.index', compact('latestPosts', 'posts', 'url'));
+        return response()->view('post.index', compact('latestPosts', 'posts'));
     }
 
     /**
@@ -55,19 +56,25 @@ class PostController extends Controller
     {
         $validatedData = $this->validator($request);
 
-        $excerpt = substr($validatedData['body'], 0, 30).'...';
+        $body = $this->format($validatedData['raw-body']);
+
         $post = Post::create([
             'title' => $validatedData['title'],
-            'body' => $validatedData['body'],
-            'excerpt' => $excerpt,
+            'body' => $body,
+            'raw_body' => $validatedData['raw-body'],
+            'excerpt' => $validatedData['excerpt'],
             'slug' => $validatedData['slug'],
             'category_id' => $validatedData['category'],
             'author_id' => Auth::user()->id,
         ]);
 
+        $postLink = route('posts.show', [$post->category->slug, $post->slug]);
+
+        event(new PostCreated($postLink, $post));
+
         session()->flash('message', 'Post has been created');
 
-        return response()->redirectTo(route('posts.index'));
+        return response()->redirectTo($postLink);
     }
 
     /**
@@ -79,8 +86,7 @@ class PostController extends Controller
      */
     public function show(Category $category, Post $post)
     {
-        $url = '@(http)?(s)?(://)?(([a-zA-Z])([-\w]+\.)+([^\s\.]+[^\s]*)+[^,.\s)])@';
-        return response()->view('post.show', compact('post', 'url'));
+        return response()->view('post.show', compact('post'));
     }
 
     /**
@@ -92,6 +98,7 @@ class PostController extends Controller
      */
     public function edit(Category $category, Post $post)
     {
+        Gate::authorize('update', $post);
         $categories = Category::all();
 
         return response()->view('post.edit', compact('post', 'categories'));
@@ -107,30 +114,35 @@ class PostController extends Controller
      */
     public function update(Request $request, Category $category, Post $post)
     {
+        Gate::authorize('update', $post);
         if ($request->slug == $post->slug) {
              $validatedData = $request->validate([
                 'title' => ['required', 'min:3', 'max:255'],
-                'body' => ['required', 'min:10', 'max:5000'],
+                'raw-body' => ['required', 'min:10', 'max:5000'],
+                'excerpt' => ['required', 'min:1', 'max:60'],
                 'category' => ['required'],
             ]);
 
-            $excerpt = substr($validatedData['body'], 0, 30).'...';
+             $body = $this->format($validatedData['raw-body']);
 
              $post->update([
                  'title' => $validatedData['title'],
-                 'body' => $validatedData['body'],
+                 'body' => $body,
+                 'raw_body' => $validatedData['raw-body'],
                  'category' => $validatedData['category'],
-                 'excerpt' => $excerpt,
+                 'excerpt' => $validatedData['excerpt'],
              ]);
         } else {
             $data = $this->validator($request);
-            $excerpt = substr($data['body'], 0, 30).'...';
+            $body = $this->format($data['raw-body']);
+
             $post->update([
                 'title' => $data['title'],
-                'body' => $data['body'],
+                'body' => $body,
+                'raw_body' => $data['raw-body'],
                 'slug' => $data['slug'],
                 'category' => $data['category'],
-                'excerpt' => $excerpt,
+                'excerpt' => $data['excerpt'],
             ]);
         }
 
@@ -183,9 +195,25 @@ class PostController extends Controller
     private function validator(Request $request) {
         return $request->validate([
             'title' => ['required', 'min:3', 'max:255'],
-            'body' => ['required', 'min:10', 'max:5000'],
+            'raw-body' => ['required', 'min:10', 'max:5000'],
             'slug' => ['unique:posts', 'min:2', 'max:40', 'required', new Slug()],
+            'excerpt' => ['min:1', 'max:50', 'string', 'required'],
             'category' => ['required'],
         ]);
+    }
+
+    private function format($type) {
+        $url = '@\^\^(http)?(s)?(://)?(([a-zA-Z])([-\w]+\.)+([^\s\.]+[^\s]*)+)\^\^@';
+        $return = preg_replace($url, '<a href="http$2://$4" target="_blank" title="$1$2$3$4">$1$2$3$4</a>', e($type));
+        $bold = '@\*\*(.*)\*\*@';
+        $return = preg_replace($bold, '<strong>$1</strong>', $return);
+        $title = '@==(.*)==@';
+        $return = preg_replace($title, '<h4>$1</h4>', $return);
+        $italic = '@\*(.*)\*@';
+        $return = preg_replace($italic, '<i>$1</i>', $return);
+        $underline = '@\+\+(.*)\+\+@';
+        $return = preg_replace($underline, '<u>$1</u>', $return);
+        return $return;
+
     }
 }

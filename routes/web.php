@@ -63,8 +63,30 @@ Route::get('author-apply', "Misc\AuthorFormController@show")->name('author-form.
 Route::get('author-apply/requirements', 'Misc\AuthorFormController@index')->name('author-form.index');
 Route::post('author-apply', "Misc\AuthorFormController@store")->name('author-form.store');
 
-Auth::routes();
+Route::post('posts/{category:slug}/{post:slug}/comments/create', 'CommentController@store')->name('comments.create');
+
+Route::get('/contact-us', 'Misc\ContactUsController@index');
+
+Route::post('/contact-us', 'Misc\ContactUsController@store')->name('contact-us');
+
+Route::resource('users', 'UserController', ['only' => ['index']]);
+
+Auth::routes(['verify' => true]);
 
 Route::get('/home', 'HomeController@index')->name('home');
 
-Route::get('/test/{user}', 'Api\UserSearchController@search');
+Route::get('/twitter', function() {
+    return redirect("https://twitter.com/EducateMast");
+})->name('twitter');
+
+Route::get('/patreon', function() {
+    return redirect('https://patreon.com/EducateMast');
+})->name('patreon');
+
+Route::get('/twitter', function() {
+    return redirect('https://twitter.com/EducateMast');
+})->name('twitter');
+
+Route::get('/discord', function() {
+    return redirect('https://discord.gg/gANjVMj');
+})->name('discord');

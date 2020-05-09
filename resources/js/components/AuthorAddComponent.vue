@@ -50,7 +50,7 @@
 
             AddAdmin(username) {
                 console.log(username)
-                axios.post('/admin/add/author/'+username).then(response => {
+                axios.post('/api/admin/add/author/'+username+'?api-token='+this.token).then(response => {
                     console.log(response)
                     this.username = null
                     this.users = {}

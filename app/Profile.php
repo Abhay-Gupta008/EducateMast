@@ -11,4 +11,12 @@ class Profile extends Model
     public function user() {
         return $this->belongsTo(User::class);
     }
+
+    public function profile_image() {
+        if ($this->image != null) {
+            return 'storage/'.$this->image;
+        } else {
+            return 'img/no_image_available.svg';
+        }
+    }
 }

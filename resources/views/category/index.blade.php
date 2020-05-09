@@ -1,6 +1,6 @@
 @extends('layouts.app')
 @section('content')
-    <div class="container">
+    <div class="container mb-5">
         <div class="row">
             <div class="col-md-12">
                 <div class="card-header">
@@ -8,7 +8,7 @@
                 </div>
             </div>
             <div class="col-md-12">
-                <div class="bg-white card-body">
+                <div class="bg-light card-body">
                     @foreach($categories as $category)
                         <div class="text-center"><h4 class="font-weight-bolder">{{ $category->name }} : <a href="{{ route('categories.show', $category->slug) }}">{{ $category->slug }}</a></div>
                     @endforeach

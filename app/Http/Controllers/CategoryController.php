@@ -68,9 +68,8 @@ class CategoryController extends Controller
      */
     public function show(Category $category)
     {
-        $url = '@(http)?(s)?(://)?(([a-zA-Z])([-\w]+\.)+([^\s\.]+[^\s]*)+[^,.\s)])@';
-        $posts = Post::where('category_id', $category->id)->orderBy('created_at', 'desc')->paginate(5);
-        return response()->view('category.show', compact('category', 'posts', 'url'));
+        $posts = $category->posts()->latest()->paginate(5);
+        return response()->view('category.show', compact('category', 'posts'));
     }
 
     /**
@@ -81,7 +80,7 @@ class CategoryController extends Controller
      */
     public function edit(Category $category)
     {
-        Gate::authorize('edit', $category);
+        Gate::authorize('update', $category);
         return response()->view('category.edit', compact('category'));
     }
 

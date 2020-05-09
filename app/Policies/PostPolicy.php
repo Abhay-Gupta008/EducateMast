@@ -51,9 +51,9 @@ class PostPolicy
      * @param  \App\Post  $post
      * @return mixed
      */
-    public function update(User $user, Post $post)
+    public function update(User $user, Post $post = Null)
     {
-        return $user->hasRole('admin');
+        return $user->hasRole('admin') || @$post->author->username == $user->username;
     }
 
     /**

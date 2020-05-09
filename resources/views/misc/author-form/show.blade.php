@@ -1,12 +1,12 @@
 @extends('layouts.app')
 @section('content')
-    <div class="container">
+    <div class="container mb-5">
         <div class="row">
             <div class="col-md-12">
                 <div class="card-header">Author Form. <a class="text-dark" href="{{ route('author-form.index') }}">Check out the requirements.</a></div>
             </div>
             <div class="col-md-12">
-                <div class="bg-white">
+                <div class="bg-light">
                     <div class="card-body">
                         @if($showForm)
                             <form method="POST" action="{{ route('author-form.store') }}">

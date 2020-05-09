@@ -6,6 +6,7 @@ use App\Category;
 use App\Policies\CategoryPolicy;
 use App\Policies\PostPolicy;
 use App\Policies\ProfilePolicy;
+use App\Policies\UserPolicy;
 use App\Post;
 use App\Profile;
 use App\User;
@@ -21,6 +22,7 @@ class AuthServiceProvider extends ServiceProvider
      */
     protected $policies = [
         // 'App\Model' => 'App\Policies\ModelPolicy',
+        User::class => UserPolicy::class,
         Category::class => CategoryPolicy::class,
         Post::class => PostPolicy::class,
         Profile::class => ProfilePolicy::class,

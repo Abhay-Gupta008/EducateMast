@@ -18,7 +18,8 @@
         "laravel/slack-notification-channel": "^2.0",
         "laravel/telescope": "^3.2",
         "laravel/tinker": "^2.0",
-        "laravel/ui": "^2.0"
+        "laravel/ui": "^2.0",
+      "ext-curl": "*"
     },
     "require-dev": {
         "facade/ignition": "^2.0",

@@ -1,6 +1,6 @@
 @extends('layouts.app')
 @section('content')
-    <div class="container">
+    <div class="container mb-5">
         <div class="row">
             <div class="col-md-12">
                 <div class="card-header">
@@ -8,7 +8,7 @@
                 </div>
             </div>
             <div class="col-md-12">
-                <div class="bg-white">
+                <div class="bg-light">
                     <div class="card-body">
                         <form method="post" action="{{ route('profiles.update', $profile->user->username) }}" enctype="multipart/form-data">
                             @csrf
@@ -52,6 +52,18 @@
                                             <strong>{{ $message }}</strong>
                                         </span>
                                     @enderror
+                                </div>
+                            </div>
+
+                            <div class="form-group row">
+                                <div class="col-md-7 offset-md-1">
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="checkbox" name="receive_emails" id="receive_emails" {{ old('remember') || $profile->receive_emails ? 'checked' : '' }}>
+
+                                        <label class="form-check-label" for="receive_emails">
+                                            Receive Emails
+                                        </label>
+                                    </div>
                                 </div>
                             </div>
 

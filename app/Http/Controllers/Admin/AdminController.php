@@ -11,14 +11,16 @@ use App\Role;
 class AdminController extends Controller
 {
     public function store(User $user) {
-        Gate::authorize('addAuthors');
+        if(request()->user()->can('addAuthors')) {
+            $authorRole = Role::role('author')->first();
 
-        $authorRole = Role::role('author')->first();
-
-        if ($user->hasRole('author')) {
-            return abort(406);
+            if ($user->hasRole('author')) {
+                return abort(406);
+            } else {
+                return $user->roles()->attach($authorRole->id);
+            }
         } else {
-            return $user->roles()->attach($authorRole->id);
+            return abort(403);
         }
     }
 }
