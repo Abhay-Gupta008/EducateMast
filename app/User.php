@@ -91,6 +91,10 @@ class User extends Authenticatable implements MustVerifyEmail
             $badges = $badges.'<span class="badge badge-secondary mr-2">Author</span>';
         }
 
+        if ($this->hasRole('trusted')) {
+            $badges = $badges.'<span class="badge badge-warning mr-2">Trusted</span>';
+        }
+
         return $badges;
     }
 

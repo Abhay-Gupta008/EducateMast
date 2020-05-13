@@ -20,6 +20,8 @@ window.Vue = require('vue');
 // files.keys().map(key => Vue.component(key.split('/').pop().split('.')[0], files(key).default))
 
 Vue.component('author-add-component', require('./components/AuthorAddComponent.vue').default);
+Vue.component('trusted-add-component', require('./components/TrustedAddComponent.vue').default);
+Vue.component('admin-add-component', require('./components/AdminAddComponent.vue').default);
 
 /**
  * Next, we will create a fresh Vue application instance and attach it to

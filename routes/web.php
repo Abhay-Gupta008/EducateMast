@@ -19,8 +19,6 @@ Route::name('admin.')->prefix('admin')->group(function() {
     Route::get('telescope', function() {
         return response()->redirectTo('/telescope');
     })->name('telescope.show');
-
-    Route::post('add/author/{user:username}', 'Admin\AdminController@store')->name('new-author.store');
 });
 
 Route::resource('categories', 'CategoryController', ['except' => ['show', 'edit', 'update', 'destroy']]);

@@ -42,8 +42,16 @@
                                 <div class="col-md-12">View all users: <a class="text-dark" href="{{ route('users.index') }}">Click Here</a></div>
                         @endcan
 
+                        @can('addAdmins')
+                             <admin-add-component token="{{ Auth::user()->api_token }}"></admin-add-component>
+                        @endcan
+
                         @can('addAuthors')
                             <author-add-component token="{{ Auth::user()->api_token }}"></author-add-component>
+                        @endcan
+
+                        @can('addTrusted')
+                             <trusted-add-component token="{{ Auth::user()->api_token }}"></trusted-add-component>
                         @endcan
                     </div>
                 </div>

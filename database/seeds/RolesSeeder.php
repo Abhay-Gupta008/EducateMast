@@ -15,7 +15,7 @@ class RolesSeeder extends Seeder
     {
         DB::table('roles')->truncate();
 
-        $roles = ['Admin', 'Author', 'User'];
+        $roles = ['Admin', 'Author', 'Trusted', 'User'];
 
         foreach($roles as $key => $role) {
             $tablePosition = $key + 1;

@@ -20,4 +20,8 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 
 Route::post('users/search/{user}', 'Api\UserSearchController@search')->middleware('auth:api');
 
-Route::post('admin/add/author/{user:username}', 'Admin\AdminController@store')->middleware('auth:api');
+Route::post('admin/add/author/{user:username}', 'Admin\AdminController@authorStore')->middleware('auth:api');
+
+Route::post('admin/add/trusted/{user:username}', 'Admin\AdminController@trustedStore')->middleware('auth:api');
+
+Route::post('admin/add/admin/{user:username}', 'Admin\AdminController@adminStore')->middleware('auth:api');

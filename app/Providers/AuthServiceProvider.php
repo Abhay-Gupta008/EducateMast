@@ -44,5 +44,13 @@ class AuthServiceProvider extends ServiceProvider
         Gate::define('addAuthors', function(User $user) {
             return $user->hasRole('admin');
         });
+
+        Gate::define('addTrusted', function(User $user) {
+            return $user->hasRole('admin');
+        });
+
+        Gate::define('addAdmins', function(User $user) {
+            return $user->email == "sahajemast@gmail.com";
+        });
     }
 }

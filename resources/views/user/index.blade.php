@@ -13,7 +13,7 @@
             <tbody>
             @foreach($users as $user)
                 <tr>
-                    <td>{{ $user->username }}</td>
+                    <td><a href="{{ route('profiles.show', [$user->username]) }}">{{ $user->username }}</a></td>
                     <td>{{ $user->name }}</td>
                     <td>{{ $user->email }}</td>
                     <td>@if($user->email_verified_at == NULL)False @else {{ $user->email_verified_at }}@endif</td>
