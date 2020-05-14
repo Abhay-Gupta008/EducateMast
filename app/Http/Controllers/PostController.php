@@ -129,7 +129,7 @@ class PostController extends Controller
                  'title' => $validatedData['title'],
                  'body' => $body,
                  'raw_body' => $validatedData['raw-body'],
-                 'category' => $validatedData['category'],
+                 'category_id' => $validatedData['category'],
                  'excerpt' => $validatedData['excerpt'],
              ]);
         } else {
@@ -141,7 +141,7 @@ class PostController extends Controller
                 'body' => $body,
                 'raw_body' => $data['raw-body'],
                 'slug' => $data['slug'],
-                'category' => $data['category'],
+                'category_id' => $data['category'],
                 'excerpt' => $data['excerpt'],
             ]);
         }
